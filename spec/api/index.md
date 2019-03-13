@@ -31,16 +31,16 @@ Resources
 Get working API version.
 This resource can not be created by users.
 
-#### GET request
-- GET `/`  
-  Without any parameter
+#### Get request
+- GET `/`
+- Without any parameter
 
 #### Example response
 ```json
 {
   "version": "0.0.0",
   "_links": {
-    "self": "${API_ROOT}/"
+    "self": { "href": "${API_ROOT}/" }
   },
   "_embedded": {}
 }
@@ -74,7 +74,7 @@ _Notice: This resource URL will not implemented at this moment. You can only acc
   "handle": "example",
   "name": null,
   "_links": {
-    "self": "${API_ROOT}/users/bdc2d099-f36f-4b67-ac20-676bb84f57d6"
+    "self": { "href": "${API_ROOT}/users/bdc2d099-f36f-4b67-ac20-676bb84f57d6" }
   }
 }
 ```
@@ -95,3 +95,50 @@ None
 
 #### Embedded Resource
 None
+
+### PostResource
+
+#### Get resource
+_Notice: This resource URL will not implemented at this moment. You can only access this resource from another resources that embed this resource._
+
+#### Create resource
+_WIP_
+
+#### Example
+```json
+{
+  "id": "1a2e11fd-5bb7-4680-8ff7-23ab48c21d4b",
+  "text": "OMG! My project was held back.",
+  "author": "9db74ca5-b48f-4101-b4e4-b2fdf7a90dd8",
+  "_links": {
+    "self": { "href": "${API_ROOT}/posts/1a2e11fd-5bb7-4680-8ff7-23ab48c21d4b" },
+  },
+  "_embedded": {
+    "users": [
+      {
+        "id": "9db74ca5-b48f-4101-b4e4-b2fdf7a90dd8",
+        "name": "MY HANDLE",
+        "handle": "handle"
+      } 
+    ]
+  }
+}
+```
+
+#### State
+
+```ts
+interface {
+  id: UUID
+  text: string
+  author: UUID // on User
+}
+```
+
+#### Links
+None
+
+#### Embedded Resource
+field name | embedded resource
+-- | --
+users | `UserResource[]`
