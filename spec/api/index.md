@@ -102,6 +102,8 @@ None
 _Notice: This resource URL will not implemented at this moment. You can only access this resource from another resources that embed this resource._
 
 #### Create resource
+Create with callee account.
+
 _WIP_
 
 #### Example
@@ -118,7 +120,11 @@ _WIP_
       {
         "id": "9db74ca5-b48f-4101-b4e4-b2fdf7a90dd8",
         "name": "MY HANDLE",
-        "handle": "handle"
+        "handle": "handle",
+        "_links": {
+          "self": { "href": "${API_ROOT}/users/9db74ca5-b48f-4101-b4e4-b2fdf7a90dd8" }
+        },
+        "_embedded": {}
       } 
     ]
   }
@@ -139,6 +145,6 @@ interface {
 None
 
 #### Embedded Resource
-field name | embedded resource
--- | --
-users | `UserResource[]`
+required | field name | embedded resource
+-- | -- | --
+✔︎ | users | `UserResource[]`
