@@ -160,7 +160,7 @@ None
 #### Embedded Resource
 field name | embedded resource | appear when | description
 -- | -- | -- | --
-user | `UserResource` | always | author
+users | `UserResource[]` | always
 
 ### FlowResource
 - Flow have target users.
