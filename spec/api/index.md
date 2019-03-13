@@ -1,7 +1,7 @@
 Echo API
 ===
 
-- Follow http://stateless.co/hal_specification.html
+- Follow HAL: https://www.ietf.org/archive/id/draft-kelly-json-hal-08.txt
 - URL base is `/api`
 - `${}` on example are variables. These have:
   
@@ -19,9 +19,11 @@ Common
 - Field "_embedded" will be empty object when no embedded resource 
 - All resources includes "self" link. It's for getting its resource.
 - Following types can be used
+- Return 404 Not Found if there are no resource with given condition
 
 ```ts
-type UUID = string // alias but it's UUID
+type UUID = string // validated as UUID v4
+type ISO8601 = string // validated as ISO8601
 ```
 
 Resources
@@ -97,14 +99,23 @@ None
 None
 
 ### PostResource
+Represent of post that created by user.
 
 #### Get resource
+Get post with embed `UserResource`
+
 _Notice: This resource URL will not implemented at this moment. You can only access this resource from another resources that embed this resource._
 
 #### Create resource
 Create with callee account.
 
-_WIP_
+- POST `/posts`
+- Accept JSON request body
+- Parameters
+  required|field name|type|description
+  --|--|--|--
+  ✔️|text|string|something you shout
+- Returns PostResource without any embedded resource.
 
 #### Example
 ```json
@@ -112,10 +123,97 @@ _WIP_
   "id": "1a2e11fd-5bb7-4680-8ff7-23ab48c21d4b",
   "text": "OMG! My project was held back.",
   "author": "9db74ca5-b48f-4101-b4e4-b2fdf7a90dd8",
+  "createdAt": "2019-03-13T18:53:53.838Z",
   "_links": {
     "self": { "href": "${API_ROOT}/posts/1a2e11fd-5bb7-4680-8ff7-23ab48c21d4b" },
   },
   "_embedded": {
+    "user": {
+      "id": "9db74ca5-b48f-4101-b4e4-b2fdf7a90dd8",
+      "name": "MY HANDLE",
+      "handle": "handle",
+      "_links": {
+        "self": { "href": "${API_ROOT}/users/9db74ca5-b48f-4101-b4e4-b2fdf7a90dd8" }
+      },
+      "_embedded": {}
+    }
+  }
+}
+```
+
+#### State
+
+```ts
+interface {
+  id: UUID
+  text: string
+  author: UUID // User.id
+  createdAt: ISO8601
+}
+```
+
+#### Links
+None
+
+#### Embedded Resource
+field name | embedded resource | appear when | description
+-- | -- | -- | --
+user | `UserResource` | always | author
+
+### FlowResource
+- Flow have target users.
+- You can get set of posts from flow. They are came from target users.
+- Embed `PostResource[]` are sorted by PostResource.createdAt.
+- Return HTTP 200 and empty _embedded.posts (`[]`) if there are no posts with parameter
+
+#### Get timeline flow
+Timeline is special flow. Their posts are from your following users.
+
+- GET `/posts/flow/timeline`
+- Parameters
+  required|field name|type|description
+  --|--|--|--
+  -|max_id|uuid|Post id. If given returns posts created before `max_id`'s post.
+  -|min_id|uuid|Post id. If given returns postts created after `min_id`'s post.
+- Callee can get 20 posts by one time.
+
+#### Example
+```json
+{
+  "id": "timeline",
+  "count": 2,
+  "_links": {
+    "self": { "href": "${API_ROOT}/posts/flow/timeline" },
+    "next": {
+      "href": "${API_ROOT}/posts/flow/timeline?min_id=1a2e11fd-5bb7-4680-8ff7-23ab48c21d4b"
+    },
+    "previous": {
+      "href": "${API_ROOT}/posts/flow/timeline?max_id=670e347a-b3da-4575-af3c-d8e959dc1643"
+    }
+  },
+  "_embedded": {
+    "posts": [
+      {
+        "id": "1a2e11fd-5bb7-4680-8ff7-23ab48c21d4b",
+        "text": "OMG! My project was held back.",
+        "author": "9db74ca5-b48f-4101-b4e4-b2fdf7a90dd8",
+        "createdAt": "2019-03-13T18:53:53.838Z",
+        "_links": {
+          "self": { "href": "${API_ROOT}/posts/1a2e11fd-5bb7-4680-8ff7-23ab48c21d4b" },
+        },
+        "_embedded": {}
+      },
+      {
+        "id": "670e347a-b3da-4575-af3c-d8e959dc1643",
+        "text": "It's new one...",
+        "author": "9db74ca5-b48f-4101-b4e4-b2fdf7a90dd8",
+        "createdAt": "2019-03-13T17:52:10.838Z",
+        "_links": {
+          "self": { "href": "${API_ROOT}/posts/670e347a-b3da-4575-af3c-d8e959dc1643" },
+        },
+        "_embedded": {}
+      },
+    ],
     "users": [
       {
         "id": "9db74ca5-b48f-4101-b4e4-b2fdf7a90dd8",
@@ -135,16 +233,19 @@ _WIP_
 
 ```ts
 interface {
-  id: UUID
-  text: string
-  author: UUID // on User
+  id: "timeline"
+  count: number // length of posts
 }
 ```
 
 #### Links
-None
+field name | description | appear when
+-- | -- | --
+previous | to access more older post. for read more feature. | always
+next | to wait for new posts | always
 
 #### Embedded Resource
-required | field name | embedded resource
--- | -- | --
-✔︎ | users | `UserResource[]`
+field name | embedded resource | appear when | description
+-- | -- | -- | --
+users | `UserResource[]` | always | all author of posts
+posts | `PostResource[]` | always | Without any embedded resource. They are sorted by createdAt desc
