@@ -128,15 +128,17 @@ Create with callee account.
     "self": { "href": "${API_ROOT}/posts/1a2e11fd-5bb7-4680-8ff7-23ab48c21d4b" },
   },
   "_embedded": {
-    "user": {
-      "id": "9db74ca5-b48f-4101-b4e4-b2fdf7a90dd8",
-      "name": "MY HANDLE",
-      "handle": "handle",
-      "_links": {
-        "self": { "href": "${API_ROOT}/users/9db74ca5-b48f-4101-b4e4-b2fdf7a90dd8" }
-      },
-      "_embedded": {}
-    }
+    "users": [
+      {
+        "id": "9db74ca5-b48f-4101-b4e4-b2fdf7a90dd8",
+        "name": "MY HANDLE",
+        "handle": "handle",
+        "_links": {
+          "self": { "href": "${API_ROOT}/users/9db74ca5-b48f-4101-b4e4-b2fdf7a90dd8" }
+        },
+        "_embedded": {}
+      }
+    ]
   }
 }
 ```
