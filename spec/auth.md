@@ -25,15 +25,16 @@ actor "Resource Owner"
 [![](./_resources/psuedo-implicit-flow.png)]()
 
 ### AuthZ URL
-`/auth/pauth?redirect_url=`
+- Open `/auth/pauth` with following parametetrs
 
-Field name | Description
--- | --
-redirect_url | Accept URLs. After resource owner accepts redirect to redirect_url
+
+Field | Description | Optitonal
+-- | -- | --
+redirect_url | Accept URLs. After resource owner accepts redirect to redirect_url | No
 
 ### Redirect to redirect_url
 Redirect to redirect_url with following parameters.
 
-Field name | Description
+Field | Description
 -- | --
 token | string. It must be passed when call Echo API as "Authorization" header value.
