@@ -23,3 +23,17 @@ actor "Resource Owner"
 ```
 
 [![](./_resources/psuedo-implicit-flow.png)]()
+
+### AuthZ URL
+`/auth/pauth?redirect_url=`
+
+Field name | Description
+-- | --
+redirect_url | Accept URLs. Redirect with
+
+### Redirect to redirect_url
+Redirect to redirect_url with following parameters.
+
+Field name | Description
+-- | --
+token | string. It must be passed when call Echo API as "Authorization" header value.
