@@ -15,11 +15,13 @@ _WIP_
 
 Common
 ---
+- Token is always required without any notiation.  
+  Passed as "Authorization Header"
+- Return 404 Not Found if there are no resource with given condition
 - Field "_link" will be empty object when no links
 - Field "_embedded" will be empty object when no embedded resource 
 - All resources includes "self" link. It's for getting its resource.
 - Following types can be used
-- Return 404 Not Found if there are no resource with given condition
 
 ```ts
 type UUID = string // validated as UUID v4
@@ -35,6 +37,7 @@ This resource can not be created by users.
 
 #### Get request
 - GET `/`
+- No token required
 - Without any parameter
 
 #### Example response
