@@ -5,7 +5,7 @@ Echo API
 - URL base is `/api`
 - `${}` on example are variables. These have:
   
-  variable name | description
+  Name | Description
   -- | --
   API_ROOT | Api root, such as `https://example.com/api`
 
@@ -115,9 +115,9 @@ Create with callee account.
 - POST `/posts`
 - Accept JSON request body
 - Parameters
-  required|field name|type|description
+  Field|Description|Optional
   --|--|--|--
-  ✔️|text|string|something you shout
+  `text`|something you shout|No
 - Returns PostResource without any embedded resource.
 
 #### Example
@@ -163,9 +163,9 @@ interface {
 None
 
 #### Embedded Resource
-field name | embedded resource | appear when | description
+Field | Resource | Description | Optional
 -- | -- | -- | --
-users | `UserResource[]` | always
+users | `UserResource[]` | Related users of this post | Yes
 
 ### FlowResource
 - Flow have target users.
@@ -178,10 +178,10 @@ Timeline is special flow. Their posts are from your following users.
 
 - GET `/posts/flow/timeline`
 - Parameters
-  required|field name|type|description
-  --|--|--|--
-  -|max_id|uuid|Post id. If given returns posts created before `max_id`'s post.
-  -|min_id|uuid|Post id. If given returns postts created after `min_id`'s post.
+  Field|Description|Optional
+  --|--|--
+  `max_id`|`Post.id`. If given returns posts created before `max_id`'s post.|No
+  `min_id`|`Post.id`. If given returns postts created after `min_id`'s post.|No
 - Callee can get 20 posts by one time.
 
 #### Example
@@ -248,13 +248,13 @@ interface {
 ```
 
 #### Links
-field name | description | appear when
+Field | Description | Optional
 -- | -- | --
-previous | to access more older post. for read more feature. | always
-next | to wait for new posts | always
+previous | to access more older post. for read more feature. | No
+next | to wait for new posts | No
 
 #### Embedded Resource
-field name | embedded resource | appear when | description
+Field | Embedded resource | Description | Optional
 -- | -- | -- | --
-users | `UserResource[]` | always | all author of posts
-posts | `PostResource[]` | always | Without any embedded resource. They are sorted by createdAt desc
+users | `UserResource[]` | Authors of posts | No
+posts | `PostResource[]` | Without any embedded resource. They are sorted by createdAt desc | No
