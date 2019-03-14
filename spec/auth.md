@@ -29,7 +29,7 @@ actor "Resource Owner"
 
 Field name | Description
 -- | --
-redirect_url | Accept URLs. Redirect with
+redirect_url | Accept URLs. After resource owner accepts redirect to redirect_url
 
 ### Redirect to redirect_url
 Redirect to redirect_url with following parameters.
