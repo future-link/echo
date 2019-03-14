@@ -127,6 +127,7 @@ Create with callee account.
   "text": "OMG! My project was held back.",
   "author": "9db74ca5-b48f-4101-b4e4-b2fdf7a90dd8",
   "createdAt": "2019-03-13T18:53:53.838Z",
+  "visibility": "public",
   "_links": {
     "self": { "href": "${API_ROOT}/posts/1a2e11fd-5bb7-4680-8ff7-23ab48c21d4b" },
   },
@@ -154,6 +155,7 @@ interface {
   text: string
   author: UUID // User.id
   createdAt: ISO8601
+  visibility: "public" // Currently "public" only supported 
 }
 ```
 
@@ -203,6 +205,7 @@ Timeline is special flow. Their posts are from your following users.
         "text": "OMG! My project was held back.",
         "author": "9db74ca5-b48f-4101-b4e4-b2fdf7a90dd8",
         "createdAt": "2019-03-13T18:53:53.838Z",
+        "visibility": "public",
         "_links": {
           "self": { "href": "${API_ROOT}/posts/1a2e11fd-5bb7-4680-8ff7-23ab48c21d4b" },
         },
@@ -213,6 +216,7 @@ Timeline is special flow. Their posts are from your following users.
         "text": "It's new one...",
         "author": "9db74ca5-b48f-4101-b4e4-b2fdf7a90dd8",
         "createdAt": "2019-03-13T17:52:10.838Z",
+        "visibility": "public",
         "_links": {
           "self": { "href": "${API_ROOT}/posts/670e347a-b3da-4575-af3c-d8e959dc1643" },
         },
