@@ -4,5 +4,19 @@
   "main": "src/index.ts",
   "author": "otofune <otofune@otofune.me>",
   "license": "AGPL",
-  "private": true
+  "private": true,
+  "scripts": {
+    "typeorm": "ts-node $(which typeorm)"
+  },
+  "devDependencies": {
+    "@types/node": "^11.11.3",
+    "typescript": "^3.3.3333"
+  },
+  "dependencies": {
+    "pg": "^7.9.0",
+    "pluralize": "^7.0.0",
+    "reflect-metadata": "^0.1.13",
+    "ts-node": "^8.0.3",
+    "typeorm": "^0.2.15"
+  }
 }

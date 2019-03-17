@@ -1,0 +1,5 @@
+export ECHO_DB_HOSTNAME=localhost
+export ECHO_DB_PORT=5432
+export ECHO_DB_USERNAME=postgres
+export ECHO_DB_PASSWORD=postgres
+export ECHO_DB_DATABASE=echo
