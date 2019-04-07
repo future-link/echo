@@ -1,7 +1,5 @@
 # Echo API
 
----
-
 - Follow HAL: https://www.ietf.org/archive/id/draft-kelly-json-hal-08.txt
 - URL base is `/api/v1`
 - `${}` on example are variables. These have:
@@ -12,13 +10,9 @@
 
 ## Introduction
 
----
-
 _WIP_
 
 ## Common
-
----
 
 - Without any notation, you must pass a token using an `Authorization` header
 - Servers return 404 Not Found if there are no resource with given condition
@@ -37,8 +31,6 @@ type ISO8601 = string // validated as ISO8601
 - Failed responses have a field `errors` which has an array of error
 
 ## Resources
-
----
 
 ### IndexResource
 
