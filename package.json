@@ -4,5 +4,21 @@
   "main": "src/index.ts",
   "author": "otofune <otofune@otofune.me>",
   "license": "AGPL",
-  "private": true
+  "private": true,
+  "scripts": {
+    "dev": "ts-node-dev ./src/index.ts"
+  },
+  "devDependencies": {
+    "@types/koa": "^2.0.48",
+    "@types/koa-router": "^7.0.40",
+    "@types/uuid": "^3.4.4",
+    "ts-node": "^8.0.3",
+    "ts-node-dev": "^1.0.0-pre.32",
+    "typescript": "^3.4.2"
+  },
+  "dependencies": {
+    "koa": "^2.7.0",
+    "koa-router": "^7.4.0",
+    "uuid": "^3.3.2"
+  }
 }
