@@ -1,14 +1,15 @@
-import { UUID, ValidationError } from './base'
+import { Entity, Reference, UUID, ValidationError } from './base'
 import { UserRef } from './user'
 
 export type Visibility = 'public'
 
-export class PostRef {
-  readonly _type = 'Post' as const
+export class PostRef implements Reference {
+  readonly type = 'PostRef' as const
   constructor(readonly id: UUID) {}
 }
 
-export class Post {
+export class Post implements Entity {
+  readonly type = 'Post' as const
   readonly id: UUID
   readonly author: UserRef
   readonly createdAt: Date
@@ -37,15 +38,5 @@ export class Post {
 
   public get ref(): PostRef {
     return new PostRef(this.id)
-  }
-
-  toJson(): any {
-    return {
-      id: this.id,
-      author: this.author.id,
-      createdAt: this.createdAt.toISOString(),
-      text: this.text,
-      visibility: this.visibility,
-    }
   }
 }

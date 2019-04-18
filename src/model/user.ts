@@ -1,11 +1,13 @@
-import { UUID, generateUUID, ValidationError } from './base'
+import { Entity, Reference, UUID, generateUUID, ValidationError } from './base'
 import { Post, Visibility } from './post'
 
-export class UserRef {
-  readonly _type = 'User' as const
+export class UserRef implements Reference {
+  readonly type = 'UserRef' as const
   constructor(readonly id: UUID) {}
 }
-export class User {
+
+export class User implements Entity {
+  readonly type = 'User' as const
   readonly id: UUID
   readonly handle: string
   readonly name: string | null
@@ -20,17 +22,9 @@ export class User {
     return new UserRef(this.id)
   }
 
-  toJson(): any {
-    return {
-      id: this.id,
-      handle: this.handle,
-      name: this.name,
-    }
-  }
-
-  static create({ handle, name }: { handle: string; name?: string | null }): User {
+  static create({ id, handle, name }: { id?: UUID, handle: string; name?: string | null }): User {
     return new User({
-      id: generateUUID(),
+      id: id || generateUUID(),
       handle,
       name: name || null
     })
@@ -43,9 +37,9 @@ export class User {
     })
   }
 
-  createPost({ text, visibility }: { text: string; visibility?: Visibility}): Post {
+  createPost({ id, text, visibility }: { id?: UUID, text: string; visibility?: Visibility}): Post {
     return new Post({
-      id: generateUUID(),
+      id: id || generateUUID(),
       author: this.ref,
       createdAt: new Date(),
       text,
