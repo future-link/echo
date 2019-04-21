@@ -1,5 +1,5 @@
 import { UUID, Post, PostRef } from '../../model'
-import { PostRepository } from '../../repository'
+import { PostRepository } from '../../repositories'
 
 export class MemPostRepository implements PostRepository {
   private posts: Map<UUID, Post>

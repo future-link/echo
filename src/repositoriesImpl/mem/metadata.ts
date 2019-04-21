@@ -1,5 +1,5 @@
 import { Metadata } from '../../model/metadata'
-import { MetadataRepository } from '../../repository/metadata'
+import { MetadataRepository } from '../../repositories/metadata'
 import { Services } from '../../services'
 
 export class MemMetadataRepository implements MetadataRepository {

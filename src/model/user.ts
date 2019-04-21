@@ -11,22 +11,25 @@ export class User implements Entity {
   readonly id: UUID
   readonly handle: string
   readonly name: string | null
+  readonly hashedPassword: string
 
-  constructor({ id, handle, name }: { id: UUID; handle: string; name: string | null }) {
+  constructor({ id, handle, name, hashedPassword }: { id: UUID; handle: string; name: string | null, hashedPassword: string }) {
     this.id = id
     this.handle = validateHandleName(handle)
     this.name = validateName(name)
+    this.hashedPassword = hashedPassword
   }
 
   get ref(): UserRef {
     return new UserRef(this.id)
   }
 
-  static create({ id, handle, name }: { id?: UUID, handle: string; name?: string | null }): User {
+  static create({ id, handle, name, hashedPassword }: { id?: UUID, handle: string; name?: string | null; hashedPassword: string }): User {
     return new User({
       id: id || generateUUID(),
       handle,
-      name: name || null
+      name: name || null,
+      hashedPassword
     })
   }
 
