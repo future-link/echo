@@ -1,0 +1,20 @@
+doctype html
+html
+  head
+    meta(charset="utf-8")
+    title Link Pseudo Auth
+  body
+    h1 Authorization
+    p #{domain} requires your permission. 
+    form(method="POST")
+      input(type="submit", value="Go")
+      table
+        tr
+          th Handle
+          td
+            input(type="text", placeholder="your handle", name="handle", pattern="^[0-9A-Za-z_]{1,20}$", required, maxlength=20)
+        tr
+          th Password
+          td
+            input(type="password", placeholder="your password", name="password", minlength=8, required)
+            
