@@ -15,30 +15,28 @@
   along with this program.  If not, see <https://www.gnu.org/licenses/>.
  ----- */
 
-import { build, Factoralize } from 'torikago'
+import { build } from 'torikago'
 import * as bcrypt from 'bcrypt'
-import { Services, Repositories, Usecases } from './services'
+import { Services } from './services'
 import { Config } from './config'
-import { userSignUp, userSignIn, userDoAuth } from './usecases'
 import { createApp } from './app'
+import { createFactory } from './wire'
 
 import { User } from './model/user'
-import { MemMetadataRepository } from './repositoriesImpl/mem/metadata'
 import { MemUserRepository } from './repositoriesImpl/mem/user'
 import { MemPostRepository } from './repositoriesImpl/mem/post'
-import { MemSessionRepository } from './repositoriesImpl/mem/session'
-
-const round = 10
 
 const config: Config = {
   version: '0.0.1',
+  port: 3000,
+  bcryptRounds: 10
 }
 
 const exampleUser = User.create({
   id: 'bdc2d099-f36f-4b67-ac20-676bb84f57d6',
   handle: 'example',
   name: null,
-  hashedPassword: bcrypt.hashSync('password', round),
+  hashedPassword: bcrypt.hashSync('password', config.bcryptRounds),
 })
 
 const examplePost = exampleUser.createPost({
@@ -46,25 +44,10 @@ const examplePost = exampleUser.createPost({
   text: 'Hello',
 })
 
-const repositories: Factoralize<Services, Repositories> = {
-  metadataRepository: ({ config }) => new MemMetadataRepository(config),
-  userRepository: () => new MemUserRepository([exampleUser]),
-  postRepository: () => new MemPostRepository([examplePost]),
-  sessionRepository: () => new MemSessionRepository([]),
-}
-
-const usecases: Factoralize<Services, Usecases> = {
-  userSignUp,
-  userSignIn,
-  userDoAuth,
-}
-
 const services = build<Services>({
-  config: () => config,
-  hashPassword: () => pass => bcrypt.hash(pass, round),
-  compareHash: () => (hash, password) => bcrypt.compare(password, hash),
-  ...repositories,
-  ...usecases,
+  ...createFactory(config),
+  userRepository: () => new MemUserRepository([exampleUser]),
+  postRepository: () => new MemPostRepository([examplePost])
 })
 
-const app = createApp(services).listen(3000)
+createApp(services).listen(config.port)
