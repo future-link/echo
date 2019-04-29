@@ -17,8 +17,9 @@
 
 import { build } from 'torikago'
 import * as bcrypt from 'bcrypt'
+import * as dotenv from 'dotenv'
 import { Services } from './services'
-import { Config } from './config'
+import { loadConfigFromEnv} from './config'
 import { createApp } from './app'
 import { createFactory } from './wire'
 
@@ -26,17 +27,15 @@ import { User } from './model/user'
 import { MemUserRepository } from './repositoriesImpl/mem/user'
 import { MemPostRepository } from './repositoriesImpl/mem/post'
 
-const config: Config = {
-  version: '0.0.1',
-  port: 3000,
-  bcryptRounds: 10
-}
+dotenv.load()
+
+const config = loadConfigFromEnv()
 
 const exampleUser = User.create({
   id: 'bdc2d099-f36f-4b67-ac20-676bb84f57d6',
   handle: 'example',
   name: null,
-  hashedPassword: bcrypt.hashSync('password', config.bcryptRounds),
+  hashedPassword: bcrypt.hashSync('password', config.bcryptRound),
 })
 
 const examplePost = exampleUser.createPost({

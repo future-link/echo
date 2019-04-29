@@ -22,7 +22,7 @@ export function createFactory(config: Config): Factoralize<Services, Services> {
 
   return {
     config: () => config,
-    hashPassword: ({ config: { bcryptRounds } }) => pass => bcrypt.hash(pass, bcryptRounds),
+    hashPassword: ({ config: { bcryptRound } }) => pass => bcrypt.hash(pass, bcryptRound),
     compareHash: () => (hash, password) => bcrypt.compare(password, hash),
     ...repositories,
     ...usecases,

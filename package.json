@@ -10,6 +10,7 @@
   },
   "devDependencies": {
     "@types/bcrypt": "^3.0.0",
+    "@types/dotenv": "^6.1.1",
     "@types/koa": "^2.0.48",
     "@types/koa-bodyparser": "^4.2.2",
     "@types/koa-router": "^7.0.40",
@@ -22,6 +23,7 @@
   },
   "dependencies": {
     "bcrypt": "^3.0.6",
+    "dotenv": "^7.0.0",
     "koa": "^2.7.0",
     "koa-bodyparser": "^4.2.1",
     "koa-router": "^7.4.0",
