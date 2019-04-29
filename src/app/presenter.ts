@@ -78,7 +78,7 @@ function meadataToJson(m: Metadata): unknown {
 }
 
 function metadataToPath(_m: Metadata): string {
-  return '/'
+  return '/api/v1/'
 }
 
 function metadataToLinks(m: Metadata): LinksMap {
@@ -96,7 +96,7 @@ function userToJson(u: User): unknown {
 }
 
 function userToPath(u: User): string {
-  return `/users/${u.id}`
+  return `/api/v1/users/${u.id}`
 }
 
 function userToLinks(u: User): LinksMap {
@@ -106,7 +106,7 @@ function userToLinks(u: User): LinksMap {
 }
 
 function userRefToPath(u: UserRef): string {
-  return `/users/${u.id}`
+  return `/api/v1/users/${u.id}`
 }
 
 function postToJson(p: Post): unknown {
@@ -120,7 +120,7 @@ function postToJson(p: Post): unknown {
 }
 
 function postToPath(p: Post): string {
-  return `/posts/${p.id}`
+  return `/api/v1/posts/${p.id}`
 }
 
 function postToLinks(p: Post): LinksMap {
@@ -131,7 +131,7 @@ function postToLinks(p: Post): LinksMap {
 }
 
 function postRefToPath(p: PostRef): string {
-  return `/posts/${p.id}`
+  return `/api/v1/posts/${p.id}`
 }
 
 function sessionToJson(s: Session): unknown {

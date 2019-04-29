@@ -1,23 +1,26 @@
 import { Context } from 'koa'
 import Router from 'koa-router'
 import { Services } from '../services'
+import { UserRef, PostRef, NotFoundError, BusinessLogicError } from '../model'
 import { modelToJson } from './presenter'
-import { UserRef, PostRef, NotFoundError, BusinessLogicError } from '../model';
+import { requireAuth as requireAuthMiddleware } from './middlewares'
 
-export function createApiRouter({ metadataRepository, userRepository, postRepository }: Services): Router {
+export function createApiRouter({ metadataRepository, userRepository, postRepository, sessionRepository }: Services): Router {
   const router = new Router()
   router.use(errorHandler)
+
+  const requireAuth = requireAuthMiddleware(sessionRepository)
 
   router.get('/', async ctx => {
     ctx.body = modelToJson(await metadataRepository.fetchMetadata())
   })
 
-  router.get('/users/:id', async ctx => {
+  router.get('/users/:id',requireAuth, async ctx => {
     const ref = new UserRef(ctx.params.id)
     ctx.body = modelToJson(await userRepository.fetchByRef(ref))
   })
 
-  router.get('/posts/:id', async ctx => {
+  router.get('/posts/:id', requireAuth, async ctx => {
     const ref = new PostRef(ctx.params.id)
     ctx.body = modelToJson(await postRepository.fetchByRef(ref))
   })
@@ -43,6 +46,9 @@ async function errorHandler(ctx: Context, next: () => Promise<unknown>): Promise
     } else if(err instanceof BusinessLogicError) {
       ctx.status = 400
       message = err.message
+    } if(err.status) {
+      ctx.status = err.status
+      message = err.message || 'something happened'
     } else {
       ctx.status = 500
       message = 'something happened'

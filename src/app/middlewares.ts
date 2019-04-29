@@ -4,7 +4,8 @@ import { promisify } from 'util'
 import { Middleware, Context } from 'koa'
 import { compile, Options, LocalsObject, compileTemplate } from 'pug'
 import fetch from 'node-fetch'
-import { ValidationError } from '../model'
+import { ValidationError, User, Session, SessionRef, UserRef } from '../model'
+import { SessionRepository } from '../repositories'
 
 const readFile = promisify(fs.readFile)
 
@@ -18,7 +19,7 @@ export function usePug({ path: dirPath, pug }: { path: string; pug?: Options }):
       const templateSrc = await readFile(path, 'utf-8')
       const template = compile(templateSrc, {
         basedir: dirPath,
-        ...pug
+        ...pug,
       })
       templateCache.set(name, template)
       return template
@@ -53,6 +54,37 @@ export function verifyWithRecaptcha(secretKey: string): Middleware {
       throw new ValidationError('Fail to verify with reCAPTCHA')
     }
 
+    await next()
+  }
+}
+
+export function requireAuth(sessionRepository: SessionRepository): Middleware<any, { userRef: UserRef }> {
+  return async (ctx, next) => {
+    const auth: string | undefined = ctx.headers.authorization
+    if (auth == null) {
+      ctx.throw(401, 'Authorization header is required')
+      throw 'unreachable'
+    }
+
+    const [schema, token] = auth.split(/\s+/, 2)
+    if (schema !== 'Bearer') {
+      ctx.throw(401, 'Authorization Scheme must be `Bearer')
+      throw 'unreachable'
+    }
+    if (token == null) {
+      ctx.throw(401, 'Invalid Auth Header')
+      throw 'unreachable'
+    }
+
+    console.log(token)
+
+    const session = await sessionRepository.fetchByRef(new SessionRef(token))
+    if (session == null) {
+      ctx.throw(401, 'Invalid token')
+      throw 'unreachable'
+    }
+
+    ctx.userRef = session.user
     await next()
   }
 }

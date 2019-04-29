@@ -27,7 +27,7 @@ import { User } from './model/user'
 import { MemUserRepository } from './repositoriesImpl/mem/user'
 import { MemPostRepository } from './repositoriesImpl/mem/post'
 
-dotenv.load()
+dotenv.config()
 
 const config = loadConfigFromEnv()
 
