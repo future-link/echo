@@ -5,9 +5,26 @@ import { ValidationError, BusinessLogicError } from '../model'
 import { usePug } from './middlewares'
 import { Context } from 'koa'
 
-export function createWebRouter({ userDoAuth }: Services): Router {
+export function createWebRouter({ userSignUp, userDoAuth }: Services): Router {
   const viewPath = join(__dirname, '../../views')
   const router = new Router().use(usePug({ path: viewPath })).use(errorHandler)
+
+  router.get('/auth/signup', async ctx => {
+    await ctx.render('signup')
+  })
+
+  router.post('/auth/signup', async ctx => {
+    const handle: string | undefined = ctx.request.body.handle
+    const name: string | null = ctx.request.body.name || null
+    const password: string | undefined = ctx.request.body.password
+
+    if (handle == null) throw new ValidationError('handle is required')
+    if (password == null) throw new ValidationError('password is required')
+
+    await userSignUp({ handle, name, password })
+    
+    ctx.redirect('/auth/settings')
+  })
 
   router.get('/auth/pauth', async ctx => {
     const redirectUrl: string | undefined = ctx.query.redirect_url
@@ -30,6 +47,8 @@ export function createWebRouter({ userDoAuth }: Services): Router {
     redirectUrl.hash = `token=${session.id}`
     ctx.redirect(redirectUrl.toJSON())
   })
+
+  router.get('/auth/settings', ctx => ctx.render('settings'))
 
   return router
 }

@@ -2,10 +2,9 @@ doctype html
 html
   head
     meta(charset="utf-8")
-    title Link Pseudo Auth
+    title Link Sign Up
   body
-    h1 Authorization
-    p #{domain} requires your permission. 
+    h1 Sign Up
     form(method="POST")
       input(type="submit", value="Go")
       table
@@ -14,7 +13,10 @@ html
           td
             input(type="text", placeholder="your handle", name="handle", pattern="^[a-z0-9\-]{3,15}$", required, maxlength=15)
         tr
+          th Name
+          td
+            input(type="text", placeholder="your name", name="name")
+        tr
           th Password
           td
-            input(type="password", placeholder="your password", name="password", minlength=8, required)
-            
+            input(type="password", placeholder="your password", name="password", required, minlength=8)

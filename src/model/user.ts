@@ -75,8 +75,8 @@ export class User implements Entity {
 function validateHandleName(handle: string): string {
   if (!/^[a-z0-9\-]*$/.test(handle)) throw new ValidationError('Each "handle" characters must be a-z, 0-9, and "-"')
   const length = handle.length
-  if (length < 3 || 15 < length)
-    throw new ValidationError('"handle" must be at least 3 characters and not more than 15 characters')
+  if (length < 3 || 16 < length)
+    throw new ValidationError('"handle" must be at least 3 characters and not more than 16 characters')
   return handle
 }
 
