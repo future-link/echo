@@ -1,19 +1,24 @@
 import { join } from 'path'
+import { Context } from 'koa'
 import Router from 'koa-router'
 import { Services } from '../services'
 import { ValidationError, BusinessLogicError } from '../model'
-import { usePug } from './middlewares'
-import { Context } from 'koa'
+import { usePug, verifyWithRecaptcha, nullMiddleware } from './middlewares'
 
-export function createWebRouter({ userSignUp, userDoAuth }: Services): Router {
+export function createWebRouter({ config, userSignUp, userDoAuth }: Services): Router {
   const viewPath = join(__dirname, '../../views')
   const router = new Router().use(usePug({ path: viewPath })).use(errorHandler)
 
+  const recaptchaSiteKey = config.recaptcha && config.recaptcha.siteKey
+  const recaptchaSecretKey = config.recaptcha && config.recaptcha.secretKey
+
+  const recaptcha = recaptchaSecretKey ? verifyWithRecaptcha(recaptchaSecretKey) : nullMiddleware
+
   router.get('/auth/signup', async ctx => {
-    await ctx.render('signup')
+    await ctx.render('signup', { recaptchaSiteKey })
   })
 
-  router.post('/auth/signup', async ctx => {
+  router.post('/auth/signup', recaptcha, async ctx => {
     const handle: string | undefined = ctx.request.body.handle
     const name: string | null = ctx.request.body.name || null
     const password: string | undefined = ctx.request.body.password
@@ -30,10 +35,10 @@ export function createWebRouter({ userSignUp, userDoAuth }: Services): Router {
     const redirectUrl: string | undefined = ctx.query.redirect_url
     if (redirectUrl == null) throw new ValidationError('redirect_url is required')
     const url = new URL(redirectUrl)
-    await ctx.render('auth', { domain: url.host, redirect_url: redirectUrl })
+    await ctx.render('auth', { domain: url.host, recaptchaSiteKey })
   })
 
-  router.post('/auth/pauth', async ctx => {
+  router.post('/auth/pauth', recaptcha, async ctx => {
     const redirectUrlString: string | undefined = ctx.query.redirect_url
     const handle: string | undefined = ctx.request.body.handle
     const password: string | undefined = ctx.request.body.password

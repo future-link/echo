@@ -1,3 +1,7 @@
 export type Config = {
-  version: string
+  version: string,
+  recaptcha?: {
+    siteKey: string,
+    secretKey: string
+  }
 }

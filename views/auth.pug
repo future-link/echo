@@ -3,11 +3,12 @@ html
   head
     meta(charset="utf-8")
     title Link Pseudo Auth
+    if recaptchaSiteKey != null
+      script(src="https://www.google.com/recaptcha/api.js", async, defer)
   body
     h1 Authorization
     p #{domain} requires your permission. 
     form(method="POST")
-      input(type="submit", value="Go")
       table
         tr
           th Handle
@@ -17,4 +18,7 @@ html
           th Password
           td
             input(type="password", placeholder="your password", name="password", minlength=8, required)
+      if recaptchaSiteKey != null
+        div.g-recaptcha(data-sitekey=recaptchaSiteKey)
+      input(type="submit", value="Go")
             
