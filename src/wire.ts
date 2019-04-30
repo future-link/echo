@@ -2,7 +2,7 @@ import { Factoralize } from 'torikago'
 import * as bcrypt from 'bcrypt'
 import { Services, Repositories, Usecases } from './services'
 import { Config } from './config'
-import { userSignUp, userSignIn, userDoAuth } from './usecases'
+import { userSignUp, userSignIn, userDoAuth, userCreatePost } from './usecases'
 
 import {
   MemMetadataRepository,
@@ -18,6 +18,7 @@ export function createFactory(config: Config): Factoralize<Services, Services> {
     userSignUp,
     userSignIn,
     userDoAuth,
+    userCreatePost,
   }
 
   return {

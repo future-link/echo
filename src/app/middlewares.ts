@@ -76,8 +76,6 @@ export function requireAuth(sessionRepository: SessionRepository): Middleware<an
       throw 'unreachable'
     }
 
-    console.log(token)
-
     const session = await sessionRepository.fetchByRef(new SessionRef(token))
     if (session == null) {
       ctx.throw(401, 'Invalid token')

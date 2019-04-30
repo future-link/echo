@@ -15,4 +15,8 @@ export class MemPostRepository implements PostRepository {
   fetchByRefs(refs: PostRef[]): Promise<(Post | null)[]> {
     return Promise.all(refs.map(ref => this.fetchByRef(ref)))
   }
+
+  async save(post: Post): Promise<void> {
+    this.posts.set(post.id, post)
+  }
 }

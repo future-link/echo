@@ -1,6 +1,6 @@
 import { Config } from './config'
 import { MetadataRepository, UserRepository, PostRepository, SessionRepository } from './repositories'
-import { UserSignUp, UserDoAuth, UserSignIn } from './usecases'
+import { UserSignUp, UserDoAuth, UserSignIn, UserCreatePost } from './usecases'
 
 export type Repositories = Readonly<{
   metadataRepository: MetadataRepository
@@ -12,7 +12,8 @@ export type Repositories = Readonly<{
 export type Usecases = Readonly<{
   userSignUp: UserSignUp,
   userSignIn: UserSignIn,
-  userDoAuth: UserDoAuth
+  userDoAuth: UserDoAuth,
+  userCreatePost: UserCreatePost
 }>
 
 export type Services = Readonly<{

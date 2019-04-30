@@ -1,11 +1,17 @@
 import { Context } from 'koa'
 import Router from 'koa-router'
 import { Services } from '../services'
-import { UserRef, PostRef, NotFoundError, BusinessLogicError } from '../model'
+import { UserRef, PostRef, NotFoundError, BusinessLogicError, ValidationError } from '../model'
 import { modelToJson } from './presenter'
 import { requireAuth as requireAuthMiddleware } from './middlewares'
 
-export function createApiRouter({ metadataRepository, userRepository, postRepository, sessionRepository }: Services): Router {
+export function createApiRouter({
+  metadataRepository,
+  userRepository,
+  postRepository,
+  sessionRepository,
+  userCreatePost,
+}: Services): Router {
   const router = new Router()
   router.use(errorHandler)
 
@@ -15,7 +21,7 @@ export function createApiRouter({ metadataRepository, userRepository, postReposi
     ctx.body = modelToJson(await metadataRepository.fetchMetadata())
   })
 
-  router.get('/users/:id',requireAuth, async ctx => {
+  router.get('/users/:id', requireAuth, async ctx => {
     const ref = new UserRef(ctx.params.id)
     ctx.body = modelToJson(await userRepository.fetchByRef(ref))
   })
@@ -23,6 +29,13 @@ export function createApiRouter({ metadataRepository, userRepository, postReposi
   router.get('/posts/:id', requireAuth, async ctx => {
     const ref = new PostRef(ctx.params.id)
     ctx.body = modelToJson(await postRepository.fetchByRef(ref))
+  })
+
+  router.post('/posts', requireAuth, async ctx => {
+    const text: string | undefined = ctx.request.body.text
+    if (text == null) throw new ValidationError('`text` is required')
+    const post = await userCreatePost({ userRef: ctx.userRef, text })
+    ctx.body = modelToJson(post)
   })
 
   router.all('/api/(.*)', async () => {
@@ -36,17 +49,18 @@ async function errorHandler(ctx: Context, next: () => Promise<unknown>): Promise
   try {
     await next()
     ctx.body = {
-      result: ctx.body
+      result: ctx.body,
     }
-  } catch(err) {
+  } catch (err) {
     let message: string
-    if(err instanceof NotFoundError) {
+    if (err instanceof NotFoundError) {
       ctx.status = 404
       message = err.message
-    } else if(err instanceof BusinessLogicError) {
+    } else if (err instanceof BusinessLogicError) {
       ctx.status = 400
       message = err.message
-    } if(err.status) {
+    }
+    if (err.status) {
       ctx.status = err.status
       message = err.message || 'something happened'
     } else {
@@ -58,7 +72,7 @@ async function errorHandler(ctx: Context, next: () => Promise<unknown>): Promise
 
     ctx.body = {
       result: {},
-      errors: [{ message }]
+      errors: [{ message }],
     }
   }
 }
