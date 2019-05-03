@@ -12,8 +12,7 @@ export function createApiRouter({
   sessionRepository,
   userCreatePost,
 }: Services): Router {
-  const router = new Router()
-  router.use(errorHandler)
+  const router = new Router().use(errorHandler).use(cors)
 
   const requireAuth = requireAuthMiddleware(sessionRepository)
 
@@ -75,4 +74,15 @@ async function errorHandler(ctx: Context, next: () => Promise<unknown>): Promise
       errors: [{ message }],
     }
   }
+}
+
+async function cors(ctx: Context, next: () => Promise<void>): Promise<void> {
+  if (['GET', 'POST', 'DELETE', 'PATCH'].includes(ctx.method)) {
+    ctx.set({
+      'Access-Control-Allow-Origin': '*',
+      'Access-Control-Allow-Methods': 'GET,POST,DELETE,PATCH',
+      'Access-Control-Allow-Headers': 'Authorization,Content-Type',
+    })
+  }
+  await next()
 }
