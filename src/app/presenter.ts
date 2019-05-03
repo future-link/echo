@@ -17,7 +17,7 @@ export function modelToJson(model: Model | null, embedded?: unknown): unknown {
 function convertToJson(model: Model): unknown {
   switch (model.type) {
     case 'Metadata':
-      return meadataToJson(model)
+      return metadataToJson(model)
     case 'User':
       return userToJson(model)
     case 'Post':
@@ -71,7 +71,7 @@ function convertToPath(obj: Model | Reference): string {
   }
 }
 
-function meadataToJson(m: Metadata): unknown {
+function metadataToJson(m: Metadata): unknown {
   return {
     version: m.version,
   }
