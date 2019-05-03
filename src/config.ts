@@ -1,3 +1,9 @@
+type DatabaseConfig = {
+  type: 'mem'
+} | {
+  type: 'firestore'
+}
+
 export type Config = {
   version: string
   port: number
@@ -6,6 +12,7 @@ export type Config = {
     siteKey: string
     secretKey: string
   }
+  database: DatabaseConfig
 }
 
 export function loadConfigFromEnv(): Config {
@@ -25,11 +32,20 @@ export function loadConfigFromEnv(): Config {
           secretKey: recaptchaSecretKey,
         }
       : undefined
-  
+
+  const databaseType = process.env.DATABASE_TYPE
+  if (databaseType == null) throw '`DATABASE_TYPE` is required'
+  if (!['mem', 'firestore'].includes(databaseType)) throw 'invalid DATABASE_TYPE'
+
+  const database = {
+    type: databaseType
+  } as DatabaseConfig
+
   return {
     version,
     port,
     bcryptRound,
-    recaptcha
+    recaptcha,
+    database
   }
 }
