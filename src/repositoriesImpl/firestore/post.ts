@@ -1,4 +1,4 @@
-import { Firestore, CollectionReference, DocumentSnapshot, DocumentData, Timestamp,  } from '@google-cloud/firestore'
+import { Firestore, CollectionReference, DocumentSnapshot, DocumentData, Timestamp } from '@google-cloud/firestore'
 import { Post, PostRef, UserRef } from '../../model'
 import { PostRepository } from '../../repositories'
 
@@ -27,14 +27,14 @@ export class FirestorePostRepository implements PostRepository {
 
 function docToPost(doc: DocumentSnapshot): Post | null {
   const data = doc.data()
-  if(data == null) return null
+  if (data == null) return null
 
   return new Post({
     id: doc.id,
     author: new UserRef(data.authorId),
     createdAt: data.createdAt.toDate(),
     text: data.text,
-    visibility: data.visibility
+    visibility: data.visibility,
   })
 }
 
@@ -43,6 +43,6 @@ function postToDoc(post: Post): DocumentData {
     authorId: post.author.id,
     createdAt: Timestamp.fromDate(post.createdAt),
     text: post.text,
-    visibility: post.visibility
+    visibility: post.visibility,
   }
 }

@@ -15,11 +15,13 @@ export function createApp(services: Services): Koa {
   router.use('', webRouter.routes(), webRouter.allowedMethods())
 
   app
-    .use(bodyParser({
-      detectJSON(ctx) {
-        return /^{.+}$/.test(ctx.request.body)
-      }
-    }))
+    .use(
+      bodyParser({
+        detectJSON(ctx) {
+          return /^{.+}$/.test(ctx.request.body)
+        },
+      }),
+    )
     .use(router.routes())
     .use(router.allowedMethods())
   return app

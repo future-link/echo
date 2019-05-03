@@ -1,4 +1,4 @@
-import { Post , PostRef } from '../model/post'
+import { Post, PostRef } from '../model/post'
 
 export interface PostRepository {
   fetchByRef(ref: PostRef): Promise<Post | null>

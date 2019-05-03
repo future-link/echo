@@ -7,7 +7,7 @@ export class MemMetadataRepository implements MetadataRepository {
 
   async fetchMetadata() {
     return new Metadata({
-      version: this.config.version
+      version: this.config.version,
     })
   }
 }

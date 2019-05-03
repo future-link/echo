@@ -11,7 +11,11 @@ import {
   MemSessionRepository,
   MemUserRepository,
 } from './repositoriesImpl/mem'
-import { FirestoreUserRepository, FirestorePostRepository, FirestoreSessionRepository } from './repositoriesImpl/firestore'
+import {
+  FirestoreUserRepository,
+  FirestorePostRepository,
+  FirestoreSessionRepository,
+} from './repositoriesImpl/firestore'
 
 export function createFactory(config: Config): Factoralize<Services, Services> {
   const database = createDatabase(config)
@@ -59,7 +63,7 @@ function createRepositoryFactory(config: Config): Factoralize<Services, Reposito
         metadataRepository: ({ config }) => new MemMetadataRepository(config),
         userRepository: ({ db }) => new FirestoreUserRepository(getFirestore(db)),
         postRepository: ({ db }) => new FirestorePostRepository(getFirestore(db)),
-        sessionRepository: ({ db }) => new FirestoreSessionRepository(getFirestore(db))
+        sessionRepository: ({ db }) => new FirestoreSessionRepository(getFirestore(db)),
       }
   }
 }

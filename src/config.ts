@@ -1,8 +1,10 @@
-type DatabaseConfig = {
-  type: 'mem'
-} | {
-  type: 'firestore'
-}
+type DatabaseConfig =
+  | {
+      type: 'mem'
+    }
+  | {
+      type: 'firestore'
+    }
 
 export type Config = {
   version: string
@@ -38,7 +40,7 @@ export function loadConfigFromEnv(): Config {
   if (!['mem', 'firestore'].includes(databaseType)) throw 'invalid DATABASE_TYPE'
 
   const database = {
-    type: databaseType
+    type: databaseType,
   } as DatabaseConfig
 
   return {
@@ -46,6 +48,6 @@ export function loadConfigFromEnv(): Config {
     port,
     bcryptRound,
     recaptcha,
-    database
+    database,
   }
 }

@@ -3,12 +3,14 @@ import { MetadataRepository, UserRepository, PostRepository, SessionRepository }
 import { UserSignUp, UserDoAuth, UserSignIn, UserCreatePost } from './usecases'
 import { Firestore } from '@google-cloud/firestore'
 
-export type Database = {
-  type: 'mem'
-} | {
-  type: 'firestore'
-  instance: Firestore
-}
+export type Database =
+  | {
+      type: 'mem'
+    }
+  | {
+      type: 'firestore'
+      instance: Firestore
+    }
 
 export type Repositories = Readonly<{
   metadataRepository: MetadataRepository
@@ -18,9 +20,9 @@ export type Repositories = Readonly<{
 }>
 
 export type Usecases = Readonly<{
-  userSignUp: UserSignUp,
-  userSignIn: UserSignIn,
-  userDoAuth: UserDoAuth,
+  userSignUp: UserSignUp
+  userSignIn: UserSignIn
+  userDoAuth: UserDoAuth
   userCreatePost: UserCreatePost
 }>
 
@@ -29,6 +31,8 @@ export type Services = Readonly<{
   hashPassword: (password: string) => Promise<string>
   compareHash: (hash: string, password: string) => Promise<boolean>
   db: Database
-}> & Repositories & Usecases
+}> &
+  Repositories &
+  Usecases
 
 export type DependentTo<Keys extends keyof Services> = Pick<Services, Keys>

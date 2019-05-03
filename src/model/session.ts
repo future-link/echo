@@ -13,17 +13,7 @@ export class Session implements Entity {
   readonly client: string // domain
   readonly createdAt: Date
 
-  constructor({
-    id,
-    user,
-    client,
-    createdAt
-  }: {
-    id: UUID,
-    user: UserRef,
-    client: string,
-    createdAt: Date
-  }) {
+  constructor({ id, user, client, createdAt }: { id: UUID; user: UserRef; client: string; createdAt: Date }) {
     this.id = id
     this.user = user
     this.client = client
@@ -34,18 +24,12 @@ export class Session implements Entity {
     return new SessionRef(this.id)
   }
 
-  static create({
-    user,
-    client
-  }: {
-    user: UserRef,
-    client: string
-  }): Session {
+  static create({ user, client }: { user: UserRef; client: string }): Session {
     return new Session({
       id: generateUUID(),
       user,
       client,
-      createdAt: new Date()
+      createdAt: new Date(),
     })
   }
 }

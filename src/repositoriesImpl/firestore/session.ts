@@ -26,7 +26,7 @@ function docToSession(doc: DocumentSnapshot): Session | null {
     id: doc.id,
     user: new UserRef(data.userId),
     client: data.client,
-    createdAt: data.createdAt.toDate()
+    createdAt: data.createdAt.toDate(),
   })
 }
 
@@ -34,6 +34,6 @@ function sessionToDoc(session: Session): DocumentData {
   return {
     userId: session.user.id,
     client: session.client,
-    createdAt: Timestamp.fromDate(session.createdAt)
+    createdAt: Timestamp.fromDate(session.createdAt),
   }
 }

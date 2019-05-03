@@ -18,7 +18,7 @@
 import { build } from 'torikago'
 import * as dotenv from 'dotenv'
 import { Services } from './services'
-import { loadConfigFromEnv} from './config'
+import { loadConfigFromEnv } from './config'
 import { createApp } from './app'
 import { createFactory } from './wire'
 

@@ -138,12 +138,12 @@ function sessionToJson(s: Session): unknown {
   return {
     token: s.id,
     client: s.client,
-    createdAt: s.createdAt.toISOString()
+    createdAt: s.createdAt.toISOString(),
   }
 }
 
 function sessionToLinks(s: Session): LinksMap {
   return {
-    user: s.user
+    user: s.user,
   }
 }

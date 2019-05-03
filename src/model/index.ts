@@ -7,7 +7,7 @@ export { Session, SessionRef } from './session'
 
 import { Metadata } from './metadata'
 import { User, UserRef } from './user'
-import { Post, PostRef} from './post'
+import { Post, PostRef } from './post'
 import { Session, SessionRef } from './session'
 
 export type Model = Metadata | User | Post | Session

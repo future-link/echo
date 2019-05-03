@@ -4,7 +4,7 @@ import { UserRepository } from '../../repositories'
 
 export class FirestoreUserRepository implements UserRepository {
   private users: CollectionReference
-  
+
   constructor(private db: Firestore) {
     this.users = db.collection('users')
   }
@@ -21,7 +21,10 @@ export class FirestoreUserRepository implements UserRepository {
   }
 
   async fetchByHandle(handle: string): Promise<User | null> {
-    const qs = await this.users.where('handle', '==', handle).limit(1).get()
+    const qs = await this.users
+      .where('handle', '==', handle)
+      .limit(1)
+      .get()
     if (qs.empty) return null
     const doc = qs.docs[0]
     return docToUser(doc)
@@ -42,7 +45,7 @@ function docToUser(doc: DocumentSnapshot): User | null {
     hashedPassword: data.hashedPassword,
     iconUrl: data.iconUrl,
     createdAt: data.createdAt.toDate(),
-    updatedAt: data.updatedAt.toDate()
+    updatedAt: data.updatedAt.toDate(),
   })
 }
 
@@ -53,6 +56,6 @@ function userToDoc(user: User): DocumentData {
     hashedPassword: user.hashedPassword,
     iconUrl: user.iconUrl,
     createdAt: Timestamp.fromDate(user.createdAt),
-    updatedAt: Timestamp.fromDate(user.updatedAt)
+    updatedAt: Timestamp.fromDate(user.updatedAt),
   }
 }

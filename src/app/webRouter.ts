@@ -27,7 +27,7 @@ export function createWebRouter({ config, userSignUp, userDoAuth }: Services): R
     if (password == null) throw new ValidationError('password is required')
 
     await userSignUp({ handle, name, password })
-    
+
     ctx.redirect('/auth/settings')
   })
 

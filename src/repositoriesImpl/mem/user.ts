@@ -17,7 +17,7 @@ export class MemUserRepository implements UserRepository {
   }
 
   async fetchByHandle(handle: string): Promise<User | null> {
-    for(const user of this.users.values()) {
+    for (const user of this.users.values()) {
       if (user.handle === handle) return user
     }
     return null
