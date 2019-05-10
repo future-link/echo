@@ -1,0 +1,26 @@
+doctype html
+html
+  head
+    meta(charset="utf-8")
+    title Link Sign Up
+    if recaptchaSiteKey != null
+      script(src="https://www.google.com/recaptcha/api.js", async, defer)
+  body
+    h1 Sign Up
+    form(method="POST")
+      table
+        tr
+          th Handle
+          td
+            input(type="text", placeholder="your handle", name="handle", pattern="^[a-z0-9\-]{3,15}$", required, maxlength=15)
+        tr
+          th Name
+          td
+            input(type="text", placeholder="your name", name="name")
+        tr
+          th Password
+          td
+            input(type="password", placeholder="your password", name="password", required, minlength=8)
+      if recaptchaSiteKey != null
+        div.g-recaptcha(date-sitekey=recaptchaSiteKey)
+      input(type="submit", value="Sign Up")

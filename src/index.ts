@@ -14,3 +14,20 @@
   You should have received a copy of the GNU Affero General Public License
   along with this program.  If not, see <https://www.gnu.org/licenses/>.
  ----- */
+
+import { build } from 'torikago'
+import * as dotenv from 'dotenv'
+import { Services } from './services'
+import { loadConfigFromEnv } from './config'
+import { createApp } from './app'
+import { createFactory } from './wire'
+
+dotenv.config()
+
+const config = loadConfigFromEnv()
+
+const services = build<Services>({
+  ...createFactory(config),
+})
+
+createApp(services).listen(config.port)
